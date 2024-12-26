@@ -2,19 +2,22 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'  # Remplacez par votre URI de base de données
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///inad_ci.db'  # Remplacez par votre URI de base de données
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Désactiver le suivi des modifications
 db = SQLAlchemy(app)
 
+# Définir la table User
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    __tablename__ = 'users'  # Nom de la table dans la base de données
 
-class Order(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    order_number = db.Column(db.String(50), unique=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)  # Clé primaire
+    username = db.Column(db.String(100), unique=True, nullable=False)  # Nom d'utilisateur unique
+    email = db.Column(db.String(120), unique=True, nullable=False)  # Email unique
+    password = db.Column(db.String(200), nullable=False)  # Mot de passe
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())  # Date de création (par défaut, la date du moment)
 
-if __name__ == '__main__':
+    # Optionnel : ajouter d'autres champs comme l'adresse, numéro de téléphone, etc.
+
+# Créer les tables dans la base de données
+with app.app_context():
     db.create_all()
-    print("Tables created successfully.")
