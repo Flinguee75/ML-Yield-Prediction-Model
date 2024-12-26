@@ -16,8 +16,6 @@ class User(db.Model):
     password = db.Column(db.String(200), nullable=False)  # Mot de passe
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())  # Date de création (par défaut, la date du moment)
 
-    # Optionnel : ajouter d'autres champs comme l'adresse, numéro de téléphone, etc.
-
 # Définir la table Regions
 class Region(db.Model):
     __tablename__ = 'regions'
@@ -57,8 +55,7 @@ class Statistique(db.Model):
     id_stat = db.Column(db.Integer, primary_key=True)
     id_region = db.Column(db.Integer, db.ForeignKey('regions.id_region'))
     id_espece = db.Column(db.Integer, db.ForeignKey('especes.id_espece'))
-    pluviometrie_moyenne = db.Column(db.Float)
-    temperature_moyenne = db.Column(db.Float)
+    id_meteo = db.Column(db.Integer, db.ForeignKey('meteorologie.id_meteo'))
     taux_survie_plants = db.Column(db.Float)
     rendement_moyen = db.Column(db.Float)
     annee = db.Column(db.Integer)
