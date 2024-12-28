@@ -57,7 +57,3 @@ class Statistique(db.Model):
     rendement_moyen = db.Column(db.Float)
     annee = db.Column(db.Integer)
     __table_args__ = (db.UniqueConstraint('id_region', 'id_espece', 'annee', name='unique_stat'),)
-
-def init_app(app):
-    db.init_app(app)
-    migrate.init_app(app, db)
