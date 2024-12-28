@@ -13,7 +13,7 @@ def generate_regions_data():
         {'id_region': 2, 'nom_region': 'Bouaké'},
         {'id_region': 3, 'nom_region': 'Daloa'},
         {'id_region': 4, 'nom_region': 'Yamoussoukro'},
-            {'id_region': 5, 'nom_region': 'San-Pédro'},
+        {'id_region': 5, 'nom_region': 'San-Pédro'},
         {'id_region': 6, 'nom_region': 'Korhogo'},
         {'id_region': 7, 'nom_region': 'Man'},
         {'id_region': 8, 'nom_region': 'Divo'},
