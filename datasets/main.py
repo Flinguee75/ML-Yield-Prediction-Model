@@ -10,10 +10,13 @@ current_dir = os.path.dirname(__file__)  # Répertoire contenant le script
 model_path = os.path.join(current_dir, "final_model.pkl")
 preprocessor_path = os.path.join(current_dir, "preprocessor.pkl")
 features_path = os.path.join(current_dir, "features_names.pkl")
-selected_features = os.path.join(current_dir, "selected_features.pkl")
+selected_path = os.path.join(current_dir, "selected_features.pkl")
+
+
 
 # Charger les fichiers
 try:
+    
     final_model = joblib.load(model_path)
     print("Modèle chargé avec succès.")
 
@@ -21,10 +24,10 @@ try:
     print("Préprocesseur chargé avec succès.")
 
     feature_names = joblib.load(features_path)
-    
-    print(feature_names)
     print("Noms des caractéristiques chargés avec succès.")
-
+    
+    selected_features = joblib.load(selected_path)
+    print("Selected features chargées avec succès.")
 
 except FileNotFoundError as e:
     print(f"Erreur : {e}")
@@ -57,10 +60,21 @@ def preprocess_input(form_data, preprocessor, feature_names):
     # Convertir en DataFrame avec toutes les colonnes nécessaires
     input_df = pd.DataFrame(input_data, columns=feature_names)
 
-    print(input_df)
-
     # Appliquer le préprocesseur
     input_transformed = preprocessor.transform(input_df)
+
+   # Vérifier et corriger selected_features
+    if isinstance(selected_features[0], str):
+    # Convertir les noms en indices si nécessaire
+        feature_indices = [list(preprocessor.get_feature_names_out()).index(col) for col in selected_features]
+    else:
+        feature_indices = selected_features
+
+    # Vérifier les indices
+    print("Indices des colonnes sélectionnées :", feature_indices)
+
+    # Sélectionner les colonnes dans input_transformed
+    input_transformed = input_transformed[:, feature_indices]
     
     return input_transformed
 
@@ -103,8 +117,7 @@ def main():
     
     # Faire la prédiction
     
-    print(input_transformed)
-    
+
     rendement_tonnes = final_model.predict(input_transformed)[0]
     
     # Convertir en Franc CFA
